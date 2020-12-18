@@ -48,7 +48,7 @@ end
 
 # Output rich data to access.json and access.xml
 last_hash = output_array.last
-last_line = last_hash[:line]
+last_line = last_hash ? last_hash[:line] : "No lines found"
 output_array.each do |hash|
   hash.delete(:line)
 end
