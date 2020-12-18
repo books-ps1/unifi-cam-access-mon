@@ -3,7 +3,11 @@ require 'json'
 require 'active_support'
 require 'active_support/core_ext'
 
-PCRE = /\A(\d+-\d+-\d+T\d+:\d+:\d+\.\d+Z)\s+-\s+info:\s+User\s+([^$]+)\s+connected\. PEER ID:\s+/
+# This regular expression matches user connection entries in the service.log
+# of a Unifi camera.
+PCRE = /\A(\d+-\d+-\d+T\d+:\d+:\d+\.\d+Z)\s+-\s+info:\s+User\s+(.+)\s+connected\. PEER ID:\s+/
+
+# Set the time zone
 Time.zone = "Central Time (US & Canada)"
 
 WWW_ROOT = "/var/www/html"
@@ -43,6 +47,8 @@ File.open(OUT_TEXT_PATH, 'w') do |out_text|
 end
 
 # Output rich data to access.json and access.xml
+last_hash = output_array.last
+last_line = last_hash[:line]
 output_array.each do |hash|
   hash.delete(:line)
 end
@@ -55,6 +61,8 @@ File.open(OUT_XML_PATH, 'w') do |out_xml|
   out_xml.puts output_array.to_xml
 end
 
+# Output the HTML index page that links the access logs and displays
+# the latest entry and an update timestamp.
 File.open(OUT_HTML_PATH, 'w') do |out_html|
   out_html.puts <<EOF
 <html>
@@ -64,6 +72,10 @@ File.open(OUT_HTML_PATH, 'w') do |out_html|
   <body>
   <h1>Front Door Camera Access Logs</h1>
   <h2>Last updated: #{Time.zone.now}</h2>
+  <h2>Last access:</h2>
+  <div>
+    <pre>#{last_line}</pre>
+  </div>
   <div>
     <a href='/#{WWW_DIR}/access.txt'>Text version</a>
   </div>
