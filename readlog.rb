@@ -53,9 +53,7 @@ output_array.each do |hash|
   hash.delete(:line)
 end
 File.open(OUT_JSON_PATH, 'w') do |out_json|
-  output_array.each do |hash|
-    out_json.puts hash.to_json
-  end
+  out_json.puts output_array.to_json
 end
 File.open(OUT_XML_PATH, 'w') do |out_xml|
   out_xml.puts output_array.to_xml
