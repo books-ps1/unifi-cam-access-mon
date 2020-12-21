@@ -6,21 +6,14 @@
 require 'dotenv/load'
 require 'active_record'
 
-WWW_ROOT = "/var/www/html"
-WWW_DIR = "accessmon"
-OUT_DIR = "#{WWW_ROOT}/#{WWW_DIR}"
-
-POOL_COUNT = 5
-PORT_NUMBER = 5432
-
 ActiveRecord::Base.establish_connection(
   :adapter  => 'postgresql',
   :encoding => 'unicode',
   :database => ENV['DB_NAME'], # accessmon
   :username => ENV['DB_USERNAME'], # accessmon
   :password => ENV['DB_PASSWORD'],
-  :pool     => POOL_COUNT,
-  :port     => PORT_NUMBER,
+  :pool     => 5,
+  :port     => 5432,
   :host     => 'localhost')
 
 class AccessLine < ActiveRecord::Base
@@ -30,7 +23,7 @@ end
 class HtmlController
 
   # @param path [String] the path to the html file to write
-  def self.write(path = "#{WWW_ROOT}/#{WWW_DIR}/index.html")
+  def self.write(path = "#{ENV['WWW_ROOT']}/#{ENV['WWW_DIR']}/index.html")
     controller = self.new
     return controller.write
   end
@@ -71,7 +64,7 @@ EOF
   end
 
   # @param path [String] the path to the html file to write
-  def write(path = "#{WWW_ROOT}/#{WWW_DIR}/index.html")
+  def write(path = "#{ENV['WWW_ROOT']}/#{ENV['WWW_DIR']}/index.html")
     File.open(path, 'w') do |out_html|
       out_html.puts self.render
     end

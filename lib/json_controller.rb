@@ -7,21 +7,14 @@ require 'dotenv/load'
 require_relative './access_line'
 require 'json'
 
-WWW_ROOT = "/var/www/html"
-WWW_DIR = "accessmon"
-OUT_DIR = "#{WWW_ROOT}/#{WWW_DIR}"
-
-POOL_COUNT = 5
-PORT_NUMBER = 5432
-
 ActiveRecord::Base.establish_connection(
   :adapter  => 'postgresql',
   :encoding => 'unicode',
   :database => ENV['DB_NAME'], # accessmon
   :username => ENV['DB_USERNAME'], # accessmon
   :password => ENV['DB_PASSWORD'],
-  :pool     => POOL_COUNT,
-  :port     => PORT_NUMBER,
+  :pool     => 5,
+  :port     => 5432,
   :host     => 'localhost')
 
 class AccessLine < ActiveRecord::Base
@@ -31,7 +24,7 @@ end
 class JsonController
 
   # @param path [String] the path to the json file to write
-  def self.write(path = "#{WWW_ROOT}/#{WWW_DIR}/access.json")
+  def self.write(path = "#{ENV['WWW_ROOT']}/#{ENV['WWW_DIR']}/access.json")
     controller = self.new
     return controller.write
   end
@@ -43,7 +36,7 @@ class JsonController
   end
 
   # @param path [String] the path to the json file to write
-  def write(path = "#{WWW_ROOT}/#{WWW_DIR}/access.json")
+  def write(path = "#{ENV['WWW_ROOT']}/#{ENV['WWW_DIR']}/access.json")
     File.open(path, 'w') do |out_json|
       out_json.puts self.render
     end
