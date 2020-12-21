@@ -29,9 +29,7 @@ output_array = []
 
 File.new(filename, 'r').each_line do |line|
   if line =~ PCRE
-    timestamp = $1
-    username = $2
-    peer_id = $'
+    timestamp, username, peer_id = $1, $2, $'.strip
     output_array.push( { line: line,
                          timestamp: timestamp,
                          username: username,
