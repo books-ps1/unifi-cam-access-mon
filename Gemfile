@@ -5,4 +5,4 @@ gem 'bcrypt', '3.1.12'
 gem 'activerecord', '>= 3.1', :require => 'active_record'
 gem 'json'
 gem 'pg'
-
+gem 'dotenv'
