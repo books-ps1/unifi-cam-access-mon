@@ -28,6 +28,11 @@ class HtmlController
     return controller.write
   end
 
+  # @return [String]
+  def www_dir
+    return ENV['WWW_DIR']
+  end
+
   # @return [String] html file of access log lines
   def render
     # Set the time zone
@@ -49,13 +54,13 @@ class HtmlController
     <pre>#{last_line.nil? ? 'no records' : last_line.line}</pre>
   </div>
   <div>
-    <a href='/#{WWW_DIR}/access.txt'>Text version</a>
+    <a href='/#{www_dir}/access.txt'>Text version</a>
   </div>
   <div>
-    <a href='/#{WWW_DIR}/access.xml'>XML version</a>
+    <a href='/#{www_dir}/access.xml'>XML version</a>
   </div>
   <div>
-    <a href='/#{WWW_DIR}/access.json'>JSON version</a>
+    <a href='/#{www_dir}/access.json'>JSON version</a>
   </div>
   </body>
 </html>

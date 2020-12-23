@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 #
 require 'dotenv/load'
-require_relative './lib/access_line'
+require_relative './lib/models/access_line'
 
 log_file_path = ARGV[0]
 
