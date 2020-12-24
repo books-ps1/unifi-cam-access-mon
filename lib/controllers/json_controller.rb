@@ -1,24 +1,11 @@
 #!/usr/bin/env ruby
 #
-# This is an object-oriented version of readlog.rb
-# Written to make it easier to transition to a database-centric solution.
+# ActiveRecord and AccessLine must be initialized first for this to work.
+# See render.rb as an example.
 #
 require 'dotenv/load'
 require_relative '../models/access_line'
 require 'json'
-
-ActiveRecord::Base.establish_connection(
-  :adapter  => 'postgresql',
-  :encoding => 'unicode',
-  :database => ENV['DB_NAME'], # accessmon
-  :username => ENV['DB_USERNAME'], # accessmon
-  :password => ENV['DB_PASSWORD'],
-  :pool     => 5,
-  :port     => 5432,
-  :host     => 'localhost')
-
-class AccessLine < ActiveRecord::Base
-end
 
 # Class to generate json output from a database connection
 class JsonController
@@ -44,6 +31,22 @@ class JsonController
 
 end
 
+# Run this code only if called as an executable script and
+# not as a library file.
+#
 if __FILE__ == $0
+  ActiveRecord::Base.establish_connection(
+    :adapter  => 'postgresql',
+    :encoding => 'unicode',
+    :database => ENV['DB_NAME'], # accessmon
+    :username => ENV['DB_USERNAME'], # accessmon
+    :password => ENV['DB_PASSWORD'],
+    :pool     => ENV['DB_POOL'], # 5
+    :port     => ENV['DB_PORT'], # 5432
+    :host     => ENV['DB_HOST']) # eg. localhost
+
+  class AccessLine < ActiveRecord::Base
+  end
+
   JsonController.write
 end
