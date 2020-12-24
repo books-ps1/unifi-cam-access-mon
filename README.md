@@ -6,6 +6,9 @@ Read and parse the log file from a Unifi camera to filter and post the recent us
 This program writes files in the default web server file location under the accessmon directory.
 The accessmon directory must first be created and given write permissions for the user that runs this script.
 
+All site-relevant values are stored in environment variables to protect passwords and make the scripts easier to adapt to site wide changes.
+Copy dotenv.sample to .env and change the environment variables to what's locally appropriate.
+
 ## Scripts
 
 ### log_to_db.rb
