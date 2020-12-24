@@ -13,9 +13,9 @@ ActiveRecord::Base.establish_connection(
   :database => ENV['DB_NAME'], # accessmon
   :username => ENV['DB_USERNAME'], # accessmon
   :password => ENV['DB_PASSWORD'],
-  :pool     => 5,
-  :port     => 5432,
-  :host     => 'localhost')
+  :pool     => ENV['DB_POOL'], # 5
+  :port     => ENV['DB_PORT'], # 5432
+  :host     => ENV['DB_HOST']) # eg. localhost
 
 File.new(log_file_path, 'r').each_line do |line|
   match = AccessLine.match?(line)
