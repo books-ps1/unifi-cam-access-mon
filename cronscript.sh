@@ -9,4 +9,3 @@ scp root@unificam:/srv/unifi-protect/logs/service.log logs/.
 
 # Generate pages based on database information
 ./render.rb
-
