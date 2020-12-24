@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 # coding: utf-8
+require 'dotenv/load'
 require 'active_record'
 require 'logger'
 require 'pg'
@@ -30,7 +31,7 @@ class AccessmonMigration
       :password => ENV['DB_PASSWORD'],
       :pool     => POOL_COUNT,
       :port     => PORT_NUMBER,
-      :host     => 'glue.pumpingstationone.org')
+      :host     => ENV['DB_HOST'])
   end
 
   # Connect to the local database
@@ -59,6 +60,20 @@ class AccessmonMigration
       :pool     => POOL_COUNT,
       :port     => PORT_NUMBER,
       :host     => 'localhost')
+  end
+
+  # Connect to the local database root 'postgres'
+  def connect_remote_admin
+    ActiveRecord::Base.establish_connection(
+      :adapter  => 'postgresql',
+      :schema_search_path => 'public',
+      :encoding => 'unicode',
+      :database => 'postgres',
+      :username => ENV['DB_USERNAME'], # accessmon
+      :password => ENV['DB_PASSWORD'],
+      :pool     => POOL_COUNT,
+      :port     => PORT_NUMBER,
+      :host     => ENV['DB_HOST'])
   end
 
   # Create the database
@@ -98,14 +113,15 @@ if __FILE__ == $0
   puts "Running Accessmon Migration..."
   db = AccessmonMigration.new
 
-  db.connect_local_admin
+  #db.connect_local_admin
+  #db.connect_remote_admin
 
   #db.drop_database
-  db.create_database
+  #db.create_database
 
   # Choose one of these two
-  db.connect_local
-  #db.connect_remote
+  #db.connect_local
+  db.connect_remote
 
   db.migrate
 
