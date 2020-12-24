@@ -34,3 +34,9 @@ A sanity check program that outputs a count of all AccessLine records in the DB.
 The script that downloads the logs, and then calls log_to_db.rb and render.rb
 to save and render them.
 
+## Crontab
+
+Sample crontab entry:
+
+    0 * * * *       accessmon       /home/accessmon/git/unifi-cam-access-mon/cronscript.sh > /dev/null 2>&1
+
